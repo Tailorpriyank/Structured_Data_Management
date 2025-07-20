@@ -1,56 +1,120 @@
-# 🗃️ Structured Data Management Project
+# 🩺 Disease Tracking & Treatment Outcomes – SQL Data Warehouse Project
 
-This project was part of a graduate-level coursework assignment focused on applying principles of **structured data handling**, **schema design**, and **basic analytics** using a real-world environmental dataset. The dataset involved weather conditions and aimed to simulate how structured datasets are ingested, stored, and analyzed in enterprise systems.
-
----
-
-## 📊 Project Overview
-
-- **Domain:** Weather Monitoring / Environmental Data  
-- **Tools Used:** Python, Pandas, PostgreSQL, ER Modeling, CSV  
-- **Key Focus:** Schema creation, data validation, EDA, and analytics pipeline
+This project was developed as the final assignment for the **Structured Data Management (DAV‑5200)** course at Katz School. It focuses on building a robust SQL-based data warehouse to track the spread of infectious diseases, assess treatment effectiveness, and enable regional health analytics.
 
 ---
 
-## 📁 Repository Structure
-📦Structured_Data_Management
-┣ 📂data/                 → Raw and cleaned CSV datasets
-┣ 📂notebooks/            → Jupyter notebooks for data wrangling and analysis
-┣ 📄README.md             → Project documentation
+## 👥 Team Members
+
+- Aradhana Panchal  
+- Priyank Tailor  
+- Shruthi Kolluru  
 
 ---
 
-## 🔍 Key Features
+## 📌 Business Problem
 
-- ✅ Cleaned and validated real-world weather data (temperature, humidity, timestamp, etc.)  
-- ✅ Designed a normalized PostgreSQL schema capturing relationships between weather stations, readings, and conditions  
-- ✅ Created an Entity-Relationship Diagram (ERD) for clear schema communication  
-- ✅ Performed exploratory data analysis using Pandas and Matplotlib  
-- ✅ Visualized key metrics like daily temperatures, humidity distribution, and station-wise summaries
-
----
-
-## 📈 Sample Visuals
-
-- 📊 Boxplot of daily temperatures  
-- 🌡️ Line graph showing seasonal trends  
-- 🗺️ Summary table per station  
-
-(*Visuals stored in /notebooks or attached in presentations*)
+Tracking infectious diseases and evaluating treatment outcomes at a regional level is essential for public health planning. This project aims to:
+- Model real-world healthcare scenarios with normalized relational schema
+- Enable analytical queries across diagnoses, treatments, and outcomes
+- Support public policy and healthcare providers with meaningful insights
 
 ---
 
-## 🧠 Key Learnings
+## 🧱 OLTP Schema Design
 
-- Applied relational database principles to real-world structured data  
-- Designed and normalized a PostgreSQL schema  
-- Practiced data cleaning and transformation using Python  
-- Built meaningful visualizations aligned with backend schema
+We built a normalized schema including:
+
+**Entities:**
+- `Disease` – ID, name, type, symptoms  
+- `Patient` – demographics and contact  
+- `Location` – city, state, country, lat/lon  
+- `Diagnosis` – disease-patient-location linkage  
+- `Treatment` – name, type, description  
+- `TreatmentOutcome` – treatment start/end dates and results  
+- `HealthcareProvider` – name, address, type  
+- `ProviderTreatment` – treatment cost by provider
+
+**Relationships:**
+- One-to-many: Patient → Diagnosis  
+- Many-to-many: Treatment ↔ HealthcareProvider  
+- One-to-many: Diagnosis → TreatmentOutcome
 
 ---
 
-## 🚀 How to Run the Project
+## 📊 Sample Queries
 
-1. Clone the repo:
+- Retrieve all patients diagnosed with **Malaria**  
+- List all healthcare providers offering **Hepatitis A Vaccine**  
+- Get average cost of **Insulin Therapy**  
+- Find top 5 providers by **number of treatments**  
+- Count diagnoses by **disease and region**  
+- Analyze **treatment success rates** per disease
+
+---
+
+## 🏗️ Data Warehouse Design
+
+A **dimensional model** was created with:
+
+**Fact Table:**  
+- `FactDiagnosisTreatment` – stores event-level data linking diagnosis, treatment, provider, cost, and outcomes
+
+**Dimension Tables:**  
+- `DimDisease`, `DimPatient`, `DimLocation`, `DimTreatment`, `DimHealthcareProvider`
+
+**ETL Approach:**  
+- Used `INSERT INTO ... SELECT` to load OLTP data into dimensional tables  
+- Joined `diagnosis`, `treatment_outcome`, and `provider_treatment` to populate fact table
+
+---
+
+## 📈 Analytical Use Cases
+
+- Diagnoses per disease  
+- Average treatment cost by disease  
+- Outcome breakdown by disease  
+- Top healthcare providers by treatment volume
+
+---
+
+## 🧪 NoSQL Comparison
+
+**MongoDB:**  
+- Flexible, nested structure using JSON documents  
+- Ideal for storing entire patient records with embedded diagnosis & treatment history
+
+**Neo4j:**  
+- Graph-based model representing entities as nodes and relationships  
+- Great for querying deep connections, like disease outbreaks by location
+
+---
+
+## ☁️ AWS Architecture (Proposed)
+
+- **Amazon RDS**: PostgreSQL for relational storage  
+- **Amazon EC2**: App server for ETL jobs  
+- **Amazon S3**: Storage for scripts and backups  
+- **AWS Lambda**: Batch & real-time ETL  
+- **Amazon VPC, IAM**: Secure network and access control  
+- **API Gateway**: REST APIs for querying reports  
+
+---
+
+## 🔁 Snowflake vs PostgreSQL
+
+| Feature          | Snowflake                          | PostgreSQL                 |
+|------------------|------------------------------------|----------------------------|
+| Scalability      | Virtually unlimited                | Moderate                   |
+| Performance      | Optimized for analytics            | Best for transactional use |
+| Data Types       | Structured & semi-structured (JSON)| Mostly structured          |
+| Pricing          | Consumption-based                  | Instance-based             |
+| Management       | Fully managed                      | Requires admin work        |
+
+---
+
+## 🚀 How to Run
+
+1. Clone the repository  
 ```bash
 git clone https://github.com/Tailorpriyank/Structured_Data_Management.git
