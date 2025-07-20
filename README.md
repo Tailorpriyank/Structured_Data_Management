@@ -7,8 +7,7 @@ This project was developed as the final assignment for the **Structured Data Man
 ## 👥 Team Members
 
 - Aradhana Panchal  
-- Priyank Tailor  
-- Shruthi Kolluru  
+- Priyank Tailor   
 
 ---
 
